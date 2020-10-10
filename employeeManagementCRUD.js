@@ -1,5 +1,7 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
+// Below is randomly generated code. Purpose?
+// const { start } = require("repl");
 
 let connection = mysql.createConnection({
   host: "localhost",
@@ -15,7 +17,7 @@ connection.connect(function (err) {
   startApp();
 });
 
-function startApp() {
+const startApp = () => {
   inquirer
     .prompt({
       name: "action",
@@ -31,7 +33,7 @@ function startApp() {
         "Update employees"
       ]
     })
-    .then(function (answer) {
+    .then(answer => {
       switch (answer.action) {
         case "Add department":
           departmentAdd();
@@ -64,3 +66,49 @@ function startApp() {
     });
 }
 
+const departmentAdd = () => {
+  inquirer.prompt({
+    name: "name",
+    type: "input",
+    message: "What is the name of the department you would like to create?"
+  }).then(answer => {
+    let query = "INSERT INTO department SET name ?";
+    connection.query(query, answer),
+      err => {
+        if (err) throw err;
+        console.log("Department Add Error")
+        startApp();
+      }
+  })
+  startApp();
+};
+
+const roleAdd = () => {
+
+  startApp();
+};
+
+const employeeAdd = () => {
+
+  startApp();
+};
+
+const departmentView = () => {
+
+  startApp();
+};
+
+const roleView = () => {
+
+  startApp();
+};
+
+const employeeView = () => {
+
+  startApp();
+};
+
+const employeeUpdate = () => {
+
+  startApp();
+};
