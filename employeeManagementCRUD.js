@@ -87,8 +87,40 @@ const departmentAdd = () => {
 };
 
 const roleAdd = () => {
+  inquirer.prompt([
+    {
+      name: "title",
+      type: "input",
+      message: "What is the title of the role you would like to create?"
+    },
+    {
+      name: "salary",
+      type: "input",
+      message: "What is the salary of the role you would like to create?"
+      // validate isNaN
+    },
+    {
+      name: "department_id",
+      type: "list",
+      message: "Which department does the role you would like to create belong to?",
+      choices: [
+        "sales",
+        "engineering",
+        "finance",
+        "legal"
+      ]
+    }
+  ]).then(answer => {
+    let promptAns = { title: answer.title, salary: answer.salary, department_id: answer.department }
+    let query = "INSERT INTO role SET ?";
 
-  startApp();
+    connection.query(query, promptAns, function (err) {
+      if (err) throw err;
+      console.log("Role Added Successfully")
+      startApp();
+    }
+    );
+  });
 };
 
 const employeeAdd = () => {
