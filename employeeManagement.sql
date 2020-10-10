@@ -3,14 +3,10 @@ CREATE DATABASE employeeManagement_DB;
 
 USE employeeManagement_DB;
 
-CREATE TABLE department
-(
-  id INT NOT NULL
-  AUTO_INCREMENT,
-    name VARCHAR
-  (30) NOT NULL,
-    PRIMARY KEY
-  (id)
+CREATE TABLE department (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(30) NOT NULL,
+    PRIMARY KEY (id)
 );
   CREATE TABLE role
   (
@@ -19,7 +15,8 @@ CREATE TABLE department
     title VARCHAR
     (30) NOT NULL,
     salary DECIMAL
-    (10 , 2 ) NULL,    
+    (10 , 2 ) NULL, 
+    department_id INT NULL,   
     PRIMARY KEY
     (id),
     FOREIGN KEY
@@ -34,28 +31,28 @@ CREATE TABLE department
       (30) NOT NULL,
     last_name VARCHAR
       (30) NOT NULL, 
-      role_id INT, NULL,
-      manager_id INT, NULL,       
+      role_id INT NULL,
+      manager_id INT NULL,       
     PRIMARY KEY
       (id),
       FOREIGN KEY
       (role_id) REFERENCES role
-      (id)
+      (id),
       FOREIGN KEY
       (manager_id) REFERENCES employee
       (id)
 );
 
 
-      SELECT
-        *
-      FROM
-        employee;
-      SELECT
-        *
-      FROM
-        role;
-      SELECT
-        *
-      FROM
-        department;
+SELECT 
+    *
+FROM
+    employee;
+SELECT 
+    *
+FROM
+    role;
+SELECT 
+    *
+FROM
+    department;

@@ -30,7 +30,8 @@ const startApp = () => {
         "View departments",
         "View roles",
         "View employees",
-        "Update employees"
+        "Update employees",
+        "Exit"
       ]
     })
     .then(answer => {
@@ -61,6 +62,10 @@ const startApp = () => {
 
         case "Update employees":
           employeeUpdate();
+          break;
+
+        case "Exit":
+          connection.end();
           break;
       }
     });
@@ -124,18 +129,71 @@ const roleAdd = () => {
 };
 
 const employeeAdd = () => {
+  inquirer.prompt([
+    {
+      name: "first_name",
+      type: "input",
+      message: "What is the first name of the employee you would like to create?"
+    },
+    {
+      name: "last_name",
+      type: "input",
+      message: "What is the last name of the employee you would like to create?"
+    },
+    {
+      name: "role_id",
+      type: "input",
+      message: "What is the role of the employee you would like to create?"
+      // validate isNaN
+    },
+    {
+      name: "manager_id",
+      type: "input",
+      message: "What is the ID of the employee's manager? Leave empty if no manager."
+    }
+  ]).then(answer => {
+    let promptAns = { first_name: answer.first_name, last_name: answer.last_name, role_id: answer.role_id, manager_id: answer.manager_id }
+    let query = "INSERT INTO employee SET ?";
 
-  startApp();
+    connection.query(query, promptAns, function (err) {
+      if (err) throw err;
+      console.log("Employee Added Successfully")
+      startApp();
+    }
+    );
+  });
 };
 
 const departmentView = () => {
-
-  startApp();
+  connection.query("SELECT * FROM department", function (err, results) {
+    if (err) throw err;
+    // let arrayOfDep = () => {
+    //   var choiceArray = [];
+    //   for (var i = 0; i < results.length; i++) {
+    //     choiceArray.push(results[i].name);
+    //   }
+    //   return console.log(choiceArray.toString());
+    // }
+    // arrayOfDep();
+    console.log(results)
+    startApp();
+  });
 };
 
 const roleView = () => {
-
-  startApp();
+  connection.query("SELECT * FROM role", function (err, results) {
+    if (err) throw err;
+    // let arrayOfDep = () => {
+    //   var tit = [];
+    //   for (var i = 0; i < results.length; i++) {
+    //     choiceArray.push(results[i].title);        
+    //   }
+    //   return console.log(choiceArray.toString());
+    // }
+    console.log(results)
+    // arrayOfDep();
+    startApp();
+  });
 };
 
 const employeeView = () => {
@@ -147,3 +205,4 @@ const employeeUpdate = () => {
 
   startApp();
 };
+
