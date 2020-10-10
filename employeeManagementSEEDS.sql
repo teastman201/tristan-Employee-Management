@@ -1,41 +1,27 @@
-DROP DATABASE IF EXISTS employee_Management;
-CREATE DATABASE employee_Management;
+DROP DATABASE IF EXISTS employeeManagement_DB;
+CREATE DATABASE employeeManagement_DB;
 
-USE employee_Management;
+USE employeeManagement_DB;
 
-CREATE TABLE department
-(
-  id INT NOT NULL
-  AUTO_INCREMENT,
-  name VARCHAR
-  (30) NOT NULL,  
-  PRIMARY KEY
-  (id)
+CREATE TABLE department (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(30) NOT NULL,
+    PRIMARY KEY (id)
 );
-  CREATE TABLE role
-  (
-    id INT NOT NULL
-    AUTO_INCREMENT,
-  title VARCHAR
-    (30) NOT NULL,
-  salary DECIMAL
-    (10,2) NULL,
-  department_id INT NULL,
-  PRIMARY KEY
-    (id)
+CREATE TABLE role (
+    id INT NOT NULL AUTO_INCREMENT,
+    title VARCHAR(30) NOT NULL,
+    salary DECIMAL(10 , 2 ) NULL,
+    department_id INT NULL,
+    PRIMARY KEY (id)
 );
-    CREATE TABLE employee
-    (
-      id INT NOT NULL
-      AUTO_INCREMENT,
-  first_name VARCHAR
-      (30) NOT NULL,
-  last_name VARCHAR
-      (30) NOT NULL,
-  role_id INT NULL,
-  manager_id INT NULL,
-  PRIMARY KEY
-      (id)
+CREATE TABLE employee (
+    id INT NOT NULL AUTO_INCREMENT,
+    first_name VARCHAR(30) NOT NULL,
+    last_name VARCHAR(30) NOT NULL,
+    role_id INT NULL,
+    manager_id INT NULL,
+    PRIMARY KEY (id)
 );
 
 
@@ -58,7 +44,7 @@ CREATE TABLE department
         ("legal team lead", 110, 4),
         ("lawyer", 100, 4);
 
-      INSERT INTO employees
+      INSERT INTO employee
         (first_name, last_name, role_id, manager_id)
       VALUES
         ("Lorem", "Ipsum", 1, NULL),
@@ -67,11 +53,17 @@ CREATE TABLE department
         ("Eiusmod", "Tempor", 5, NULL),
         ("Incididunt", "Labore", 2, 1),
         ("Finibus", "Bonorum", 4, 3),
-        ("Malorum", "Voluptatem", 7, 6)
+        ("Malorum", "Voluptatem", 7, 6);
 
-      SELECT *
-      FROM employee;
-      SELECT *
-      FROM role;
-      SELECT *
-      FROM department;
+SELECT 
+    *
+FROM
+    employee;
+SELECT 
+    *
+FROM
+    role;
+SELECT 
+    *
+FROM
+    department;
