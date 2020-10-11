@@ -215,10 +215,17 @@ const employeeView = () => {
 const employeeUpdate = () => {
   inquirer.prompt([
     {
+      name: "id",
+      type: "input",
+      message: "What is the ID number of the employee you would like to update?"
+    },
+    {
       // prompt to display which employee to update
       //// choice array of employees
       //// whatever is the selection we need to retrieve the id that goes with that selection
       // how to display list of employees with id numbers?
+      // join department and role
+      // NPM install table
       name: "first_name",
       type: "input",
       message: "What is the employee's new first name?"
@@ -240,11 +247,12 @@ const employeeUpdate = () => {
       message: "What is the ID of the employee's new manager? Leave empty if no manager."
     }
   ]).then(answer => {
-    let promptAns = { first_name: answer.first_name, last_name: answer.last_name, role_id: answer.role_id, manager_id: answer.manager_id }
-    let promptId = { id: answer.id };
-    let query = "UPDATE first_name, last_name, role_id, manager_id FROM employee WHERE ?";
+    let promptAns = [answer.first_name, answer.last_name, answer.role_id, answer.manager_id, answer.id]
+    // let promptId = { id: answer.id };
+    // "UPDATE employee SET ? WHERE ?"
+    let query = "UPDATE employee SET first_name = ?, last_name = ?, role_id = ?, manager_id = ? WHERE id = ?";
 
-    connection.query(query, promptId, function (err, res) {
+    connection.query(query, promptAns, function (err, res) {
       if (err) throw err;
       console.log("Employee Updated Successfully")
       console.log(res)
