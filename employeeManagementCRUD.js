@@ -2,9 +2,7 @@ const mysql = require("mysql");
 const inquirer = require("inquirer");
 const cTable = require("console.table");
 
-// Below is randomly generated code. Purpose?
-// const { start } = require("repl");
-
+// move connection to own file
 let connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
@@ -169,16 +167,7 @@ const employeeAdd = () => {
 const departmentView = () => {
   connection.query("SELECT * FROM department", function (err, results) {
     if (err) throw err;
-    // let arrayOfDep = () => {
-    //   var choiceArray = [];
-    //   for (var i = 0; i < results.length; i++) {
-    //     choiceArray.push(results[i].name);
-    //   }
-    //   return console.log(choiceArray.toString());
-    // }
-    // arrayOfDep();
     console.table('Departments', results);
-    // conTab(results)
     startApp();
   });
 };
@@ -186,37 +175,15 @@ const departmentView = () => {
 const roleView = () => {
   connection.query("SELECT * FROM role", function (err, results) {
     if (err) throw err;
-    // let arrayOfDep = () => {
-    //   var tit = [];
-    //   for (var i = 0; i < results.length; i++) {
-    //     choiceArray.push(results[i].title);        
-    //   }
-    //   return console.log(choiceArray.toString());
-    // }
     console.table('Roles', results);
-    // arrayOfDep();
     startApp();
   });
 };
-
+// "SELECT employee.id, first_name, last_name, manager_id, title, salary, department FROM employee RIGHT JOIN role ON employee.titleid = role.titleid RIGHT JOIN department on role.department_id = department.id ORDER BY employee.id"
 const employeeView = () => {
-  // "SELECT users.name AS user, products.name AS favorite FROM users JOIN products ON users.favorite_product = products.id"
-  // "SELECT * AS employee, products.name AS favorite FROM users JOIN products ON users.favorite_product = products.id"
-
-  // "SELECT * FROM employee"
-  // "SELECT * FROM employee RIGHT JOIN role ON employee.titleid = role.id "
-  connection.query("SELECT * FROM employee RIGHT JOIN role ON employee.titleid = role.titleid ", function (err, results) {
+  connection.query("SELECT employee.id, manager_id FROM employee A, employee D WHERE manager_id = first_name", function (err, results) {
     if (err) throw err;
-    // let arrayOfDep = () => {
-    //   var tit = [];
-    //   for (var i = 0; i < results.length; i++) {
-
-    //     choiceArray.push(results[i].title);        
-    //   }
-    //   return console.log(choiceArray.toString());
-    // }
     console.table('Employees', results);
-    // arrayOfDep();
     startApp();
   });
 };
@@ -229,12 +196,6 @@ const employeeUpdate = () => {
       message: "What is the ID number of the employee you would like to update?"
     },
     {
-      // prompt to display which employee to update
-      //// choice array of employees
-      //// whatever is the selection we need to retrieve the id that goes with that selection
-      // how to display list of employees with id numbers?
-      // join department and role
-      // NPM install table
       name: "first_name",
       type: "input",
       message: "What is the employee's new first name?"
@@ -257,8 +218,6 @@ const employeeUpdate = () => {
     }
   ]).then(answer => {
     let promptAns = [answer.first_name, answer.last_name, answer.titleid, answer.manager_id, answer.id]
-    // let promptId = { id: answer.id };
-    // "UPDATE employee SET ? WHERE ?"
     let query = "UPDATE employee SET first_name = ?, last_name = ?, titleid = ?, manager_id = ? WHERE id = ?";
 
     connection.query(query, promptAns, function (err, res) {
