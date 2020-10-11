@@ -1,5 +1,7 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
+const cTable = require("console.table");
+
 // Below is randomly generated code. Purpose?
 // const { start } = require("repl");
 
@@ -141,7 +143,7 @@ const employeeAdd = () => {
       message: "What is the last name of the employee you would like to create?"
     },
     {
-      name: "role_id",
+      name: "title_id",
       type: "input",
       message: "What is the role of the employee you would like to create?"
       // validate isNaN
@@ -152,7 +154,7 @@ const employeeAdd = () => {
       message: "What is the ID of the employee's manager? Leave empty if no manager."
     }
   ]).then(answer => {
-    let promptAns = { first_name: answer.first_name, last_name: answer.last_name, role_id: answer.role_id, manager_id: answer.manager_id }
+    let promptAns = { first_name: answer.first_name, last_name: answer.last_name, title_id: answer.title_id, manager_id: answer.manager_id }
     let query = "INSERT INTO employee SET ?";
 
     connection.query(query, promptAns, function (err) {
@@ -175,7 +177,8 @@ const departmentView = () => {
     //   return console.log(choiceArray.toString());
     // }
     // arrayOfDep();
-    console.table(results)
+    console.table('Departments', results);
+    // conTab(results)
     startApp();
   });
 };
@@ -190,14 +193,19 @@ const roleView = () => {
     //   }
     //   return console.log(choiceArray.toString());
     // }
-    console.table(results)
+    console.table('Roles', results);
     // arrayOfDep();
     startApp();
   });
 };
 
 const employeeView = () => {
-  connection.query("SELECT * FROM employee", function (err, results) {
+  // "SELECT users.name AS user, products.name AS favorite FROM users JOIN products ON users.favorite_product = products.id"
+  // "SELECT * AS employee, products.name AS favorite FROM users JOIN products ON users.favorite_product = products.id"
+
+  // "SELECT * FROM employee"
+  // "SELECT * FROM employee RIGHT JOIN role ON employee.title_id = role.id "
+  connection.query("SELECT * FROM employee FULL JOIN role ON employee.id = role.id ", function (err, results) {
     if (err) throw err;
     // let arrayOfDep = () => {
     //   var tit = [];
@@ -206,7 +214,7 @@ const employeeView = () => {
     //   }
     //   return console.log(choiceArray.toString());
     // }
-    console.table(results)
+    console.table('Employees', results);
     // arrayOfDep();
     startApp();
   });
@@ -236,7 +244,7 @@ const employeeUpdate = () => {
       message: "What is the employee's new last name?"
     },
     {
-      name: "role_id",
+      name: "title_id",
       type: "input",
       message: "What is the employee's new role?"
       // validate isNaN
@@ -247,10 +255,10 @@ const employeeUpdate = () => {
       message: "What is the ID of the employee's new manager? Leave empty if no manager."
     }
   ]).then(answer => {
-    let promptAns = [answer.first_name, answer.last_name, answer.role_id, answer.manager_id, answer.id]
+    let promptAns = [answer.first_name, answer.last_name, answer.title_id, answer.manager_id, answer.id]
     // let promptId = { id: answer.id };
     // "UPDATE employee SET ? WHERE ?"
-    let query = "UPDATE employee SET first_name = ?, last_name = ?, role_id = ?, manager_id = ? WHERE id = ?";
+    let query = "UPDATE employee SET first_name = ?, last_name = ?, title_id = ?, manager_id = ? WHERE id = ?";
 
     connection.query(query, promptAns, function (err, res) {
       if (err) throw err;
