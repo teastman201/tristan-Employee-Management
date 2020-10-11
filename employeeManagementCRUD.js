@@ -205,7 +205,7 @@ const employeeView = () => {
 
   // "SELECT * FROM employee"
   // "SELECT * FROM employee RIGHT JOIN role ON employee.titleid = role.id "
-  connection.query("SELECT * FROM employee RIGHT JOIN role ON employee.titleid = role.title ", function (err, results) {
+  connection.query("SELECT * FROM employee RIGHT JOIN role ON employee.titleid = role.titleid ", function (err, results) {
     if (err) throw err;
     // let arrayOfDep = () => {
     //   var tit = [];
