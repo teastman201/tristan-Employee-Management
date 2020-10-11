@@ -175,7 +175,7 @@ const departmentView = () => {
     //   return console.log(choiceArray.toString());
     // }
     // arrayOfDep();
-    console.log(results)
+    console.table(results)
     startApp();
   });
 };
@@ -190,19 +190,67 @@ const roleView = () => {
     //   }
     //   return console.log(choiceArray.toString());
     // }
-    console.log(results)
+    console.table(results)
     // arrayOfDep();
     startApp();
   });
 };
 
 const employeeView = () => {
-
-  startApp();
+  connection.query("SELECT * FROM employee", function (err, results) {
+    if (err) throw err;
+    // let arrayOfDep = () => {
+    //   var tit = [];
+    //   for (var i = 0; i < results.length; i++) {
+    //     choiceArray.push(results[i].title);        
+    //   }
+    //   return console.log(choiceArray.toString());
+    // }
+    console.table(results)
+    // arrayOfDep();
+    startApp();
+  });
 };
 
 const employeeUpdate = () => {
+  inquirer.prompt([
+    {
+      // prompt to display which employee to update
+      //// choice array of employees
+      //// whatever is the selection we need to retrieve the id that goes with that selection
+      // how to display list of employees with id numbers?
+      name: "first_name",
+      type: "input",
+      message: "What is the employee's new first name?"
+    },
+    {
+      name: "last_name",
+      type: "input",
+      message: "What is the employee's new last name?"
+    },
+    {
+      name: "role_id",
+      type: "input",
+      message: "What is the employee's new role?"
+      // validate isNaN
+    },
+    {
+      name: "manager_id",
+      type: "input",
+      message: "What is the ID of the employee's new manager? Leave empty if no manager."
+    }
+  ]).then(answer => {
+    let promptAns = { first_name: answer.first_name, last_name: answer.last_name, role_id: answer.role_id, manager_id: answer.manager_id }
+    let promptId = { id: answer.id };
+    let query = "UPDATE first_name, last_name, role_id, manager_id FROM employee WHERE ?";
 
-  startApp();
+    connection.query(query, promptId, function (err, res) {
+      if (err) throw err;
+      console.log("Employee Updated Successfully")
+      console.log(res)
+      startApp();
+    }
+    );
+  });
 };
 
