@@ -143,7 +143,7 @@ const employeeAdd = () => {
       message: "What is the last name of the employee you would like to create?"
     },
     {
-      name: "title_id",
+      name: "titleid",
       type: "input",
       message: "What is the role of the employee you would like to create?"
       // validate isNaN
@@ -154,7 +154,7 @@ const employeeAdd = () => {
       message: "What is the ID of the employee's manager? Leave empty if no manager."
     }
   ]).then(answer => {
-    let promptAns = { first_name: answer.first_name, last_name: answer.last_name, title_id: answer.title_id, manager_id: answer.manager_id }
+    let promptAns = { first_name: answer.first_name, last_name: answer.last_name, titleid: answer.titleid, manager_id: answer.manager_id }
     let query = "INSERT INTO employee SET ?";
 
     connection.query(query, promptAns, function (err) {
@@ -204,12 +204,13 @@ const employeeView = () => {
   // "SELECT * AS employee, products.name AS favorite FROM users JOIN products ON users.favorite_product = products.id"
 
   // "SELECT * FROM employee"
-  // "SELECT * FROM employee RIGHT JOIN role ON employee.title_id = role.id "
-  connection.query("SELECT * FROM employee FULL JOIN role ON employee.id = role.id ", function (err, results) {
+  // "SELECT * FROM employee RIGHT JOIN role ON employee.titleid = role.id "
+  connection.query("SELECT * FROM employee RIGHT JOIN role ON employee.titleid = role.title ", function (err, results) {
     if (err) throw err;
     // let arrayOfDep = () => {
     //   var tit = [];
     //   for (var i = 0; i < results.length; i++) {
+
     //     choiceArray.push(results[i].title);        
     //   }
     //   return console.log(choiceArray.toString());
@@ -244,7 +245,7 @@ const employeeUpdate = () => {
       message: "What is the employee's new last name?"
     },
     {
-      name: "title_id",
+      name: "titleid",
       type: "input",
       message: "What is the employee's new role?"
       // validate isNaN
@@ -255,10 +256,10 @@ const employeeUpdate = () => {
       message: "What is the ID of the employee's new manager? Leave empty if no manager."
     }
   ]).then(answer => {
-    let promptAns = [answer.first_name, answer.last_name, answer.title_id, answer.manager_id, answer.id]
+    let promptAns = [answer.first_name, answer.last_name, answer.titleid, answer.manager_id, answer.id]
     // let promptId = { id: answer.id };
     // "UPDATE employee SET ? WHERE ?"
-    let query = "UPDATE employee SET first_name = ?, last_name = ?, title_id = ?, manager_id = ? WHERE id = ?";
+    let query = "UPDATE employee SET first_name = ?, last_name = ?, titleid = ?, manager_id = ? WHERE id = ?";
 
     connection.query(query, promptAns, function (err, res) {
       if (err) throw err;
