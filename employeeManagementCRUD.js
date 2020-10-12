@@ -180,8 +180,9 @@ const roleView = () => {
   });
 };
 // "SELECT employee.id, first_name, last_name, manager_id, title, salary, department FROM employee RIGHT JOIN role ON employee.titleid = role.titleid RIGHT JOIN department on role.department_id = department.id ORDER BY employee.id"
+// SELECT e.first_name + ' ' + e.last_name employee, m.first_name + ' ' + m.last_name manager FROM employee e LEFT JOIN employee m ON e.id = m.manager_id ORDER BY manager
 const employeeView = () => {
-  connection.query("SELECT e.first_name + ' ' + e.last_name employee, m.first_name + ' ' + m.last_name manager FROM employee e LEFT JOIN employee m ON e.id = m.manager_id ORDER BY manager", function (err, results) {
+  connection.query("SELECT CONCAT(e.first_name,' ', e.last_name) employee, CONCAT(m.first_name, ' ', m.last_name) manager FROM employee e LEFT JOIN employee m ON m.id = e.manager_id ORDER BY manager", function (err, results) {
     if (err) throw err;
     console.table('Employees', results);
     startApp();
