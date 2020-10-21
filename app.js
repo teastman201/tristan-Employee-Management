@@ -25,7 +25,7 @@ const startApp = () => {
     .then(answer => {
       switch (answer.action) {
         case "Add department":
-          departmentAdd();
+          Department.departmentAdd();
           break;
 
         case "Add roles":
