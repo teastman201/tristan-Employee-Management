@@ -1,21 +1,8 @@
-const mysql = require("mysql");
+// const mysql = require("mysql");
 const inquirer = require("inquirer");
-const cTable = require("console.table");
+var connection = require("./config/connection.js");
 
 // move connection to own file
-let connection = mysql.createConnection({
-  host: "localhost",
-  port: 3306,
-  user: "root",
-  password: "root",
-  database: "employeeManagement_DB"
-});
-
-connection.connect(err => {
-  if (err) throw err;
-  console.log("connected as id " + connection.threadId + "\n");
-  startApp();
-});
 
 const startApp = () => {
   inquirer
@@ -68,33 +55,19 @@ const startApp = () => {
           connection.end();
           break;
       }
+      startApp();
     });
+
 }
 
 // rename file to app
 
 // move to constructor file
-const departmentAdd = () => {
-  inquirer.prompt([
-    {
-      name: "name",
-      type: "input",
-      message: "What is the name of the department you would like to create?"
-    }
-  ]).then(answer => {
-    let promptAns = { name: answer.name }
-    let query = "INSERT INTO department SET ?";
 
-    connection.query(query, promptAns, function (err) {
-      if (err) throw err;
-      console.log("Department Added Successfully")
-      startApp();
-    }
-    );
-  });
-};
 
 const roleAdd = () => {
+  // choices for roles.
+  // choices for departments.
   inquirer.prompt([
     {
       name: "title",
@@ -232,4 +205,3 @@ const employeeUpdate = () => {
     );
   });
 };
-
