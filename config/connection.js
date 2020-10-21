@@ -1,5 +1,5 @@
 const mysql = require("mysql");
-var app = require("../app");
+
 
 let connection = mysql.createConnection({
     host: "localhost",
@@ -12,7 +12,7 @@ let connection = mysql.createConnection({
 connection.connect(err => {
     if (err) throw err;
     console.log("connected as id " + connection.threadId + "\n");
-    app.startApp();
+
 });
 
 module.exports = connection;

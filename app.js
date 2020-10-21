@@ -1,6 +1,7 @@
 // const mysql = require("mysql");
 const inquirer = require("inquirer");
 var connection = require("./config/connection.js");
+var Department = require("./lib/Department")
 
 // move connection to own file
 
@@ -55,10 +56,11 @@ const startApp = () => {
           connection.end();
           break;
       }
-      startApp();
+
     });
 
 }
+startApp();
 
 // rename file to app
 
