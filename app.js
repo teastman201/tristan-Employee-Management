@@ -1,7 +1,7 @@
-// const mysql = require("mysql");
+const mysql = require("mysql");
 const inquirer = require("inquirer");
 var connection = require("./config/connection.js");
-var Department = require("./lib/Department")
+// var Department = require("./lib/Department")
 
 // move connection to own file
 
@@ -21,11 +21,13 @@ const startApp = () => {
         "Update employees",
         "Exit"
       ]
+
     })
     .then(answer => {
+      // console.log(Department)
       switch (answer.action) {
         case "Add department":
-          Department.departmentAdd();
+          departmentAdd();
           break;
 
         case "Add roles":
@@ -65,7 +67,26 @@ startApp();
 // rename file to app
 
 // move to constructor file
+const departmentAdd = () => {
+  inquirer.prompt([
+    {
+      name: "department",
+      type: "input",
+      message: "What is the name of the department you would like to create?"
+    }
+  ]).then(answer => {
+    console.log(answer)
+    let promptAns = { department: answer.department }
+    let query = "INSERT INTO department SET ?";
 
+    connection.query(query, promptAns, function (err) {
+      if (err) throw err;
+      console.log("Department Added Successfully")
+      startApp();
+    }
+    );
+  });
+};
 
 const roleAdd = () => {
   // choices for roles.
@@ -107,6 +128,7 @@ const roleAdd = () => {
 };
 
 const employeeAdd = () => {
+
   inquirer.prompt([
     {
       name: "first_name",
@@ -130,8 +152,10 @@ const employeeAdd = () => {
       message: "What is the ID of the employee's manager? Leave empty if no manager."
     }
   ]).then(answer => {
+    console.log(answer);
     let promptAns = { first_name: answer.first_name, last_name: answer.last_name, titleid: answer.titleid, manager_id: answer.manager_id }
     let query = "INSERT INTO employee SET ?";
+
 
     connection.query(query, promptAns, function (err) {
       if (err) throw err;
@@ -145,7 +169,7 @@ const employeeAdd = () => {
 const departmentView = () => {
   connection.query("SELECT * FROM department", function (err, results) {
     if (err) throw err;
-    console.table('Departments', results);
+    console.table(results);
     startApp();
   });
 };
@@ -153,7 +177,7 @@ const departmentView = () => {
 const roleView = () => {
   connection.query("SELECT * FROM role", function (err, results) {
     if (err) throw err;
-    console.table('Roles', results);
+    console.table(results);
     startApp();
   });
 };
@@ -161,7 +185,7 @@ const roleView = () => {
 const employeeView = () => {
   connection.query("SELECT e.id, e.first_name, e.last_name, title, department, salary, CONCAT(m.first_name, ' ', m.last_name) manager FROM employee e LEFT JOIN employee m ON m.id = e.manager_id RIGHT JOIN role ON e.titleid = role.id RIGHT JOIN department on role.department_id = department.id ORDER BY e.id", function (err, results) {
     if (err) throw err;
-    console.table('Employees', results);
+    console.table(results);
     startApp();
   });
 };
